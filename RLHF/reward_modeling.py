@@ -12,7 +12,7 @@ import evaluate
 import numpy as np
 import torch
 import torch.nn as nn
-from datasets import load_dataset,load_from_disk
+from datasets import load_dataset
 from peft import LoraConfig, TaskType, get_peft_model
 from transformers import (
     AutoModelForSequenceClassification,
@@ -137,7 +137,7 @@ script_args = parser.parse_args_into_dataclasses()[0]
 # load the reward dataset
 # - `beyond/rlhf-reward-single-round`` for English
 # - `beyond/rlhf-reward-single-round-trans_chinese`` for Chinese
-reward_dataset = load_from_disk('../data/rlhf-reward-single-round-trans_chinese')
+reward_dataset = load_dataset('RLHF/data/rlhf-reward-single-round-trans_chinese')
 train_dataset = reward_dataset['train']
 eval_dataset = reward_dataset['test']
 if script_args.train_subset > 0:
@@ -314,7 +314,7 @@ class RewardDataCollatorWithPadding:
 
 
 # Define the metric that we'll use for validation.
-accuracy = evaluate.load("accuracy")
+accuracy = evaluate.load("evaluate/metrics/accuracy")
 
 
 def compute_metrics(eval_pred):

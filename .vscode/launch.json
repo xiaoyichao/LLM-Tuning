@@ -1,0 +1,51 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Python: 当前文件",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            // "cwd": "${fileDirname}",
+            "args": [
+               
+            ]
+        },
+        {
+            "name": "Python: reward_modeling",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env":{
+                "CUDA_VISIBLE_DEVICES":"3,1,2"
+                    },
+            "args": [
+                "--model_name",
+                "/ssd1/share/Baichuan2-7B-Base",
+                "--lora_target_models",
+                "W_pack",
+                "--num_train_epochs",
+                "1",
+                "--eval_steps",
+                "200",
+                "--save_steps",
+                "100",
+                "--per_device_train_batch_size",
+                "10",
+                "--per_device_eval_batch_size",
+                "16",
+                "--train_subset",
+                "-1",
+                "--eval_subset",
+                "-1",
+                "--max_length",
+                "1000"
+            ]
+        }
+    ]
+}

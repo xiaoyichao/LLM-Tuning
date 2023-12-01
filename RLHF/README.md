@@ -73,12 +73,12 @@ def compute_loss(self, model, inputs, return_outputs=False):
 下面，我们可以使用这样的命令，来训练 reward model：
 ```
 # train_rm.sh
-CUDA_VISIBLE_DEVICES=0,1,2,3 python reward_modeling.py \
-    --model_name baichuan-inc/baichuan-7B \
+CUDA_VISIBLE_DEVICES=0,1,2 python reward_modeling.py \
+    --model_name /ssd1/share/Baichuan2-7B-Base \
     --lora_target_models W_pack \
-    --num_train_epochs 2 \
+    --num_train_epochs 1 \
     --eval_steps 200 \
-    --save_steps 50 \
+    --save_steps 100 \
     --per_device_train_batch_size 10 \
     --per_device_eval_batch_size 16 \
     --train_subset -1 \
