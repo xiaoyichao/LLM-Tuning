@@ -12,6 +12,7 @@ import evaluate
 import numpy as np
 import torch
 import torch.nn as nn
+import deepspeed
 from datasets import load_dataset
 from peft import LoraConfig, TaskType, get_peft_model
 from transformers import (
@@ -39,7 +40,7 @@ class ScriptArguments:
         default=False,
         metadata={"help": "If you want to resume training where it left off."},
     )
-    deepspeed: Optional[str] = field(
+    deepspeed_config: Optional[str] = field(
         default=None,
         metadata={
             "help": "Path to deepspeed config if using deepspeed. You may need this if the model that you want to train doesn't fit on a single GPU."
@@ -168,7 +169,7 @@ training_args = TrainingArguments(
     save_steps=script_args.save_steps,
     gradient_accumulation_steps=script_args.gradient_accumulation_steps,
     gradient_checkpointing=script_args.gradient_checkpointing,
-    deepspeed=script_args.deepspeed,
+    deepspeed=script_args.deepspeed_config,
     local_rank=script_args.local_rank,
     remove_unused_columns=False,
     label_names=[],
@@ -207,6 +208,13 @@ print(model.hf_device_map)
 
 
 model = get_peft_model(model, peft_config)
+
+# deepspeed 改造
+# model, optimizer, _, _ = deepspeed.initialize(args=cmd_args,
+#                                                      model=model,
+#                                                      model_parameters=params)
+
+
 model.print_trainable_parameters()
 
 # Need to do this for gpt2, because it doesn't have an official pad token.
